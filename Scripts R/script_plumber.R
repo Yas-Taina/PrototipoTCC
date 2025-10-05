@@ -1,9 +1,10 @@
 # Lista e instala pacotes
-pacotes <- c("plumber", "ggplot2", "jsonlite", "dplyr", "lubridate")
+pacotes <- c("plumber", "ggplot2", "plotly", "jsonlite", "dplyr", "lubridate", "htmlwidgets")
 instalar <- pacotes[!(pacotes %in% installed.packages()[, "Package"])]
 if(length(instalar)) install.packages(instalar, repos = "https://cloud.r-project.org")
 
 lapply(pacotes, library, character.only = TRUE)
+
 api <- plumb("plumber.R")
 
 cat("Iniciando servidor Plumber na porta 8000...\n")

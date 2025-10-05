@@ -1,8 +1,24 @@
 library(plumber)
 library(ggplot2)
+library(plotly)
+library(htmlwidgets)
 library(jsonlite)
 library(dplyr)
 library(lubridate)
+
+#' @filter cors
+cors <- function(req, res) {
+  res$setHeader("Access-Control-Allow-Origin", "*")
+  
+  if (req$REQUEST_METHOD == "OPTIONS") {
+    res$setHeader("Access-Control-Allow-Methods","*")
+    res$setHeader("Access-Control-Allow-Headers", req$HTTP_ACCESS_CONTROL_REQUEST_HEADERS)
+    res$status <- 200 
+    return(list())
+  } else {
+    plumber::forward()
+  }
+}
 
 #* Health check
 #* @get /health
@@ -12,7 +28,7 @@ function() {
 
 #* Processa dados e retorna gráfico
 #* @post /gerar_grafico
-#* @serializer contentType list(type='image/png')
+#* @serializer html
 function(req, res) {
   
   cat("Recebendo requisição em:", Sys.time(), "\n")
@@ -68,26 +84,35 @@ function(req, res) {
         panel.grid.major = element_line(color = "grey80"),
         panel.grid.minor = element_blank()
       )
+ 
+      grafico_interativo <- ggplotly(grafico)
     
-    arquivo_temp <- tempfile(fileext = ".png")
-    ggsave(
-      arquivo_temp, 
-      plot = grafico, 
-      device = "png", 
-      width = 10, 
-      height = 6, 
-      dpi = 150
-    )
+    # arquivo_temp <- tempfile(fileext = ".html")
+    # ggsave(
+    #   arquivo_temp, 
+    #   plot = grafico, 
+    #   device = "html", 
+    #   width = 10, 
+    #   height = 6, 
+    #   dpi = 150
+    # )
 
-    imagem_bytes <- readBin(arquivo_temp, "raw", file.info(arquivo_temp)$size)
-    
+    #saveWidget(grafico_interativo, file = "my_interactive_plot.html", selfcontained = TRUE)
+    arquivo_temp <- tempfile(fileext = ".html")
+    saveWidget(grafico_interativo, file = arquivo_temp, selfcontained = TRUE)
+    html_str <- paste(readLines(arquivo_temp, warn = FALSE), collapse = "\n")
     unlink(arquivo_temp)
+
+
+    # imagem_bytes <- readBin(arquivo_temp, "raw", file.info(arquivo_temp)$size)
+    
+    # unlink(arquivo_temp)
     
     cat("Gráfico gerado com sucesso!\n")
-    return(imagem_bytes)
+    return(html_str)
     
   }, error = function(e) {
-    cat("Erro:", e$message, "\n")
+    cat("Erro:", toJSON(e), "\n")
     res$status <- 500
     return(list(error = paste("Erro no processamento:", e$message)))
   })
