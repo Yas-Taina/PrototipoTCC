@@ -69,8 +69,8 @@ export class DataPointsService {
       'http://localhost:8000/gerar_grafico',
       {
         data: pointsByDate.map(p => p.date),
-        valor_x: pointsByDate.map(p => p.x),
-        valor_y: pointsByDate.map(p => p.y)
+        valor_x: pointsByDate.map(p => p.x === 0 ? "NA" : p.x),
+        valor_y: pointsByDate.map(p => p.y === 0 ? "NA" : p.y)
       },
       {
         headers: { 'Content-Type': 'application/json' },

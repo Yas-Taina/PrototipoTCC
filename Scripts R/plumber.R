@@ -20,6 +20,20 @@ cors <- function(req, res) {
   }
 }
 
+to_na <- function(x) {
+  if (is.null(x)) {
+    return(NA)
+  }
+
+  x_char <- trimws(as.character(x))
+
+  if (x_char == "" || toupper(x_char) == "NA" || is.na(x_char)) {
+    return(NA)
+  }
+
+  return(x)
+}
+
 #* Health check
 #* @get /health
 function() {
@@ -44,17 +58,20 @@ function(req, res) {
         return(list(error = "JSON deve conter campos: data, valor_x, valor_y"))
       }
 
+      valor_x_clean <- sapply(dados$valor_x, to_na, USE.NAMES = FALSE)
+      valor_y_clean <- sapply(dados$valor_y, to_na, USE.NAMES = FALSE)
+
       df <- data.frame(
         data = as.Date(dados$data),
-        valor_x = as.numeric(dados$valor_x),
-        valor_y = as.numeric(dados$valor_y)
+        valor_x = as.numeric(valor_x_clean),
+        valor_y = as.numeric(valor_y_clean)
       )
 
       df_agrupado <- df %>%
         group_by(data) %>%
         summarise(
-          total_x = sum(valor_x, na.rm = TRUE),
-          total_y = sum(valor_y, na.rm = TRUE)
+          total_x = if (all(is.na(valor_x))) NA_real_ else sum(valor_x, na.rm = TRUE),
+          total_y = if (all(is.na(valor_y))) NA_real_ else sum(valor_y, na.rm = TRUE)
         ) %>%
         arrange(data)
 
@@ -62,8 +79,8 @@ function(req, res) {
       print(df_agrupado)
 
       grafico <- ggplot(df_agrupado, aes(x = data)) +
-        geom_line(aes(y = total_x, color = "Valor X"), linewidth = 1.2) +
-        geom_line(aes(y = total_y, color = "Valor Y"), linewidth = 1.2) +
+        geom_line(data=df_agrupado[!is.na(df_agrupado$total_x),], aes(y = total_x, color = "Valor X"), linewidth = 1.2) +
+        geom_line(data=df_agrupado[!is.na(df_agrupado$total_y),], aes(y = total_y, color = "Valor Y"), linewidth = 1.2) +
         geom_point(aes(y = total_x, color = "Valor X"), size = 2) +
         geom_point(aes(y = total_y, color = "Valor Y"), size = 2) +
         scale_color_manual(
