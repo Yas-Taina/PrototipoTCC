@@ -23,7 +23,20 @@ export class TestComponent implements AfterViewInit {
     this.fetchHtmlContent();
   }
 
+  
+
   fetchHtmlContent() {
+    const x = {
+      data: "2025-02-25",
+      valor: 10
+    };
+
+    const y = {
+      data: "2025-02-25",
+      valor: 5
+    };
+
+
     this.httpClient.post(
       'http://localhost:8000/gerar_grafico',
       {

@@ -1,0 +1,39 @@
+import { HttpClient } from '@angular/common/http';
+import { AfterViewInit, Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { DataPointsService } from '../../services/data-points.service';
+
+@Component({
+  selector: 'app-analyze',
+  imports: [],
+  templateUrl: './analyze.component.html',
+  styleUrl: './analyze.component.css'
+})
+export class AnalyzeComponent implements AfterViewInit {
+
+  readonly dataPointsService = inject(DataPointsService);
+  httpClient = inject(HttpClient);
+  htmlContent: string = '';
+
+  @ViewChild('plotIframe') plotIframe!: ElementRef<HTMLIFrameElement>;
+
+  ngAfterViewInit() {
+    if (this.htmlContent) {
+      this.updateIframe();
+    }
+  }
+
+  constructor() {}
+
+  async fetchHtmlContent() {
+    this.htmlContent = await this.dataPointsService.Analyze() ?? '';
+    this.updateIframe();
+  }
+
+  // deve ter um jeito mais simples de fazer isso
+  updateIframe() {
+    if (this.plotIframe && this.plotIframe.nativeElement) {
+      const iframe = this.plotIframe.nativeElement;
+      iframe.srcdoc = this.htmlContent;
+    }
+  }
+}
