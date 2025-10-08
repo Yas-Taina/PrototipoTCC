@@ -29,7 +29,6 @@ export class AnalyzeComponent implements AfterViewInit {
     this.updateIframe();
   }
 
-  // deve ter um jeito mais simples de fazer isso
   updateIframe() {
     if (this.plotIframe && this.plotIframe.nativeElement) {
       const iframe = this.plotIframe.nativeElement;

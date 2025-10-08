@@ -18,6 +18,6 @@ export class GridComponent {
 
   remove(index: number) {
     this.dataPointsService.Remove(index);
-    this.dataPoints = this.dataPointsService.GetDataPoints(); // Atualiza a lista após remoção
+    this.dataPoints = this.dataPointsService.GetDataPoints();
   }
 }

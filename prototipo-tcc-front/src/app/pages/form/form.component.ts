@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { DataPointsService } from '../../services/data-points.service';
-import { FormBuilder, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-form',
@@ -22,7 +22,5 @@ export class FormComponent {
 
   onSubmit(data: any) {
     this.dataPointsService.Save(data);
-    console.log('Data submitted:', data);
   }
-
 }

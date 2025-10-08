@@ -65,8 +65,6 @@ export class DataPointsService {
       }
     });
 
-    console.log(pointsByDate);
-
     return await this.httpClient.post(
       'http://localhost:8000/gerar_grafico',
       {

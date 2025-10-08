@@ -1,6 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { TestComponent } from "./pages/test/test.component";
-import { Router, RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { MenuComponent } from "./components/menu/menu.component";
 
 @Component({
@@ -12,9 +11,5 @@ import { MenuComponent } from "./components/menu/menu.component";
 export class AppComponent {
   title = 'prototipo-tcc-front';
 
-  readonly router = inject(Router);
-
-  constructor() {
-    
-  }
+  constructor() { }
 }
