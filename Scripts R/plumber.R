@@ -79,8 +79,14 @@ function(req, res) {
       print(df_agrupado)
 
       grafico <- ggplot(df_agrupado, aes(x = data)) +
-        geom_line(data=df_agrupado[!is.na(df_agrupado$total_x),], aes(y = total_x, color = "Valor X"), linewidth = 1.2) +
-        geom_line(data=df_agrupado[!is.na(df_agrupado$total_y),], aes(y = total_y, color = "Valor Y"), linewidth = 1.2) +
+        geom_line(
+          data=df_agrupado[!is.na(df_agrupado$total_x),],
+          aes(y = total_x, color = "Valor X"),
+          linewidth = 1.2) +
+        geom_line(
+          data=df_agrupado[!is.na(df_agrupado$total_y),],
+          aes(y = total_y, color = "Valor Y"),
+          linewidth = 1.2) +
         geom_point(aes(y = total_x, color = "Valor X"), size = 2) +
         geom_point(aes(y = total_y, color = "Valor Y"), size = 2) +
         scale_color_manual(
