@@ -24,13 +24,19 @@ export class AnalyzeComponent implements AfterViewInit {
     }
   }
 
-  constructor() {}
+  constructor() { }
 
   async fetchHtmlContent() {
     this.isLoading = true;
-    this.htmlContent = await this.dataPointsService.Analyze() ?? '';
-    this.updateIframe();
-    this.isLoading = false;
+
+    try {
+      this.htmlContent = await this.dataPointsService.Analyze() ?? '';
+      this.updateIframe();
+    } catch (error) {
+      console.error('Erro ao executar análise:', error);
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   updateIframe() {
