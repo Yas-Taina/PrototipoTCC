@@ -14,6 +14,8 @@ export class AnalyzeComponent implements AfterViewInit {
   httpClient = inject(HttpClient);
   htmlContent: string = '';
 
+  isLoading: boolean = false;
+
   @ViewChild('plotIframe') plotIframe!: ElementRef<HTMLIFrameElement>;
 
   ngAfterViewInit() {
@@ -25,8 +27,10 @@ export class AnalyzeComponent implements AfterViewInit {
   constructor() {}
 
   async fetchHtmlContent() {
+    this.isLoading = true;
     this.htmlContent = await this.dataPointsService.Analyze() ?? '';
     this.updateIframe();
+    this.isLoading = false;
   }
 
   updateIframe() {

@@ -1,7 +1,10 @@
 <div style="margin: 20px">
   <button id="btn-plot" (click)="fetchHtmlContent()">Analyze stored data points</button>
-  
+  @if (isLoading) {
+    <div>
+      <h2>Carregando Análise...</h2>
+    </div>
+  }
   <iframe #plotIframe width="95%" height="500"
     style="border:salmon; border-radius: 2px; border-style: dashed;"></iframe>
-
 </div>
