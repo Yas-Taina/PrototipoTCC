@@ -1,19 +1,24 @@
 <div style="margin: 20px">
+  <h3>Inserir Dados</h3>
   <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
   <div style="display: flex; flex-direction: column; align-items: stretch; width: 200px; gap: 10px;">
-    <label for="type">Type:</label>
-    <select id="type" formControlName="type">
+    <label for="type">Tipo:</label>
+    <select id="type" formControlName="type" class="field">
       <option value="x" selected>X</option>
       <option value="y">Y</option>
     </select>
 
-    <label for="date">Date:</label>
-    <input id="date" type="date" formControlName="date">
+    <label for="date">Data:</label>
+    <input id="date" type="date" formControlName="date" class="field">
 
-    <label for="value">Value:</label>
-    <input id="value" type="number" formControlName="value">
+    <label for="value">Valor:</label>
+    <input id="value" type="number" formControlName="value" class="field">
 
-    <button type="submit">Submit</button>
+    @if (form.invalid) {
+      <div style="color: red;">Por favor, preencha todos os campos corretamente.</div>
+    }
+
+    <button class="button" type="submit">Registrar</button>
   </div>
 </form>
 </div>
