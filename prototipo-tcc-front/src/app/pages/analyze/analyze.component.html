@@ -1,10 +1,10 @@
 <div style="margin: 20px">
   <h3>Análise de Dados</h3>
-  <button class="button" id="btn-plot" (click)="fetchHtmlContent()">Executar análise dos dados armazenados</button>
+  <button class="button" id="btn-plot" (click)="executar()">Executar análise dos dados armazenados</button>
   <p></p>
   @if (isLoading) {
     <div>
-      <h4>Carregando Análise...</h4>
+      <h4>Efetuando análise dos dados...</h4>
     </div>
   }
   <iframe #plotIframe width="95%" height="500"></iframe>

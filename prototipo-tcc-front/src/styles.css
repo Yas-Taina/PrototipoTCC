@@ -31,3 +31,8 @@ body {
   border-width: 2px;
   border-color: #545745;
 }
+
+.invalid-feedback {
+  color: red;
+  font-size: 14px;
+}

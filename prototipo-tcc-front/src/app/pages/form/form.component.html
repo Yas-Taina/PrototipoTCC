@@ -1,24 +1,33 @@
 <div style="margin: 20px">
   <h3>Inserir Dados</h3>
   <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
-  <div style="display: flex; flex-direction: column; align-items: stretch; width: 200px; gap: 10px;">
-    <label for="type">Tipo:</label>
-    <select id="type" formControlName="type" class="field">
-      <option value="x" selected>X</option>
-      <option value="y">Y</option>
-    </select>
+    <div style="display: flex; flex-direction: column; align-items: stretch; width: 200px; gap: 10px;">
+      <label for="type">Tipo:</label>
+      <select id="type" formControlName="type" class="field">
+        <option value="x" selected>X</option>
+        <option value="y">Y</option>
+      </select>
+      <div class="invalid-feedback"
+        *ngIf="form.get('type')?.errors && (form.get('type')?.touched || form.get('type')?.dirty)">
+        <div *ngIf="form.get('type')?.errors?.['required']">Por favor selecione um tipo</div>
+      </div>
 
-    <label for="date">Data:</label>
-    <input id="date" type="date" formControlName="date" class="field">
+      <label for="date">Data:</label>
+      <input id="date" type="date" formControlName="date" class="field">
+      <div class="invalid-feedback"
+        *ngIf="form.get('date')?.errors && (form.get('date')?.touched || form.get('date')?.dirty)">
+        <div *ngIf="form.get('date')?.errors?.['required']">Por favor insira uma data válida</div>
+      </div>
 
-    <label for="value">Valor:</label>
-    <input id="value" type="number" formControlName="value" class="field">
+      <label for="value">Valor:</label>
+      <input id="value" type="number" formControlName="value" class="field">
+      <div class="invalid-feedback"
+        *ngIf="form.get('value')?.errors && (form.get('value')?.touched || form.get('value')?.dirty)">
+        <div *ngIf="form.get('value')?.errors?.['required']">Por favor insira um valor</div>
+        <div *ngIf="form.get('value')?.errors?.['min']">Por favor insira um valor igual ou maior que zero</div>
+      </div>
 
-    @if (form.invalid) {
-      <div style="color: red;">Por favor, preencha todos os campos corretamente.</div>
-    }
-
-    <button class="button" type="submit">Registrar</button>
-  </div>
-</form>
+      <button class="button" type="submit">Registrar</button>
+    </div>
+  </form>
 </div>
