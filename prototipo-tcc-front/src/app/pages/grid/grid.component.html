@@ -1,20 +1,24 @@
 <div style="margin: 20px">
-  <p>Data points grid</p>
+  <h3>Dados Armazenados</h3>
   <table>
     <tr>
       <th>Data</th>
-      <th>Value</th>
-      <th>Actions</th>
+      <th>Tipo</th>
+      <th>Valor</th>
+      <th>Ações</th>
     </tr>
     <tr *ngFor="let point of dataPoints; let i = index">
-      <td>{{ point.date | date: 'dd/MM/yyyy' }}</td>
-      <td>{{ point.value }}</td>
-      <button (click)="remove(i)">Remove</button>
+      <td class="celula">{{ point.date | date: 'dd/MM/yyyy' }}</td>
+      <td class="celula">{{ point.type }}</td>
+      <td class="celula">{{ point.value }}</td>
+      <td class="celula">
+        <button class="button-delete" (click)="remove(i)">X</button>
+      </td>
     </tr>
-    @if(dataPoints.length === 0) {
-      <tr>
-        <td colspan="2">No data points available.</td>
-      </tr>
+    @if (dataPoints.length === 0) {
+    <tr>
+      <td colspan="4">Nenhum dado armazenado</td>
+    </tr>
     }
-   </table> 
+  </table>
 </div>

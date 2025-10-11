@@ -1,0 +1,16 @@
+.menu-button {
+  background-color: transparent;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+  font-size: 20px;
+  padding: 5px;
+  transition: box-shadow 0.1s ease-in-out, transform 0.1s ease-in-out;
+}
+
+.menu-button:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+}

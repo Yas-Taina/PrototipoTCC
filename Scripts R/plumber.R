@@ -119,7 +119,7 @@ function(req, res) {
       return(html_str)
     },
     error = function(e) {
-      cat("Erro:", toJSON(e), "\n")
+      cat("Erro:", conditionMessage(e), "\n")
       res$status <- 500
       return(list(error = paste("Erro no processamento:", e$message)))
     }

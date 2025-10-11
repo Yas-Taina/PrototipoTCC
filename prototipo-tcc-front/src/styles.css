@@ -1,1 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  margin: 0;
+  background-color: #f1ead8;
+}
+
+.button {
+  background-color: #80846d;
+  color: #f1ead8;
+  height: 25px;
+  border-style: none;
+}
+
+.button:hover {
+  background-color: #424439;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #80846d;
+}
+
+.button-delete {
+  background-color: #545745;
+  color: #f1ead8;
+  height: 25px;
+  border-style: none;
+}
+
+.button-delete:hover {
+  background-color: #2d2f25;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #545745;
+}
+
+.invalid-feedback {
+  color: red;
+  font-size: 14px;
+}
