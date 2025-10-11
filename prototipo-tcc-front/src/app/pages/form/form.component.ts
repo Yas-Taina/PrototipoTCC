@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { DataPointsService } from '../../services/data-points.service';
+import { DataPoint, DataPointsService } from '../../services/data-points.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -14,20 +14,28 @@ export class FormComponent {
   readonly builder = inject(FormBuilder);
 
   form = this.builder.group({
-    type: ['x', [Validators.required]],
     date: [null, [Validators.required]],
-    value: [0, [Validators.required, Validators.min(0)]]
+    valueX: [null, [Validators.min(0)]],
+    valueY: [null, [Validators.min(0)]],
   });
 
   constructor() { }
 
-  onSubmit(data: any) {
+  onSubmit(point: any) {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
+ 
+    if (!point.valueX) {
+      point.valueX = 'NA';
+    }
+    
+    if (!point.valueY) {
+      point.valueY = 'NA';
+    }
 
-    this.dataPointsService.Save(data);
+    this.dataPointsService.Save(point);
 
     alert("Dados registrados com sucesso");
   }

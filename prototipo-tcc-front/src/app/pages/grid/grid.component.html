@@ -3,14 +3,14 @@
   <table>
     <tr>
       <th>Data</th>
-      <th>Tipo</th>
-      <th>Valor</th>
+      <th>Valor X</th>
+      <th>Valor Y</th>
       <th>Ações</th>
     </tr>
     <tr *ngFor="let point of dataPoints; let i = index">
       <td class="celula">{{ point.date | date: 'dd/MM/yyyy' }}</td>
-      <td class="celula">{{ point.type }}</td>
-      <td class="celula">{{ point.value }}</td>
+      <td class="celula">{{ point.valueX }}</td>
+      <td class="celula">{{ point.valueY }}</td>
       <td class="celula">
         <button class="button-delete" (click)="remove(i)">X</button>
       </td>

@@ -2,9 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 
 export interface DataPoint {
-  type: "x" | "y"; 
   date: Date;
-  value: number;
+  valueX: number | string;
+  valueY: number | string;
 }
 
 @Injectable({
@@ -43,34 +43,14 @@ export class DataPointsService {
   }
 
   async Analyze() {
-    const pointsByDate: { date: string, x: number; y: number }[] = [];
-
     const points = this.GetDataPoints();
-
-    console.log(points);
-
-    points.forEach(point => {
-      const dateStr = point.date.toString();
-      let date = pointsByDate.find(d => d.date.toString() === dateStr);
-      if (!date) {
-        const newDate = { date: dateStr, x: 0, y: 0 };
-        pointsByDate.push(newDate);
-        date = newDate;
-      }
-      
-      if (point.type === 'x') {
-        date.x += point.value;
-      } else if (point.type === 'y') {
-        date.y += point.value;
-      }
-    });
 
     return await this.httpClient.post(
       'http://localhost:8000/gerar_grafico',
       {
-        data: pointsByDate.map(p => p.date),
-        valor_x: pointsByDate.map(p => p.x === 0 ? "NA" : p.x),
-        valor_y: pointsByDate.map(p => p.y === 0 ? "NA" : p.y)
+        data: points.map(p => p.date.toString()),
+        valor_x: points.map(p => p.valueX),
+        valor_y: points.map(p => p.valueY),
       },
       {
         headers: { 'Content-Type': 'application/json' },
