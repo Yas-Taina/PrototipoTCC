@@ -26,14 +26,6 @@ export class FormComponent {
       this.form.markAllAsTouched();
       return;
     }
- 
-    if (!point.valueX) {
-      point.valueX = 'NA';
-    }
-    
-    if (!point.valueY) {
-      point.valueY = 'NA';
-    }
 
     this.dataPointsService.Save(point);
 

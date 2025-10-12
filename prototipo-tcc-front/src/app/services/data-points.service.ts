@@ -3,8 +3,8 @@ import { inject, Injectable } from '@angular/core';
 
 export interface DataPoint {
   date: Date;
-  valueX: number | string;
-  valueY: number | string;
+  valueX?: number;
+  valueY?: number;
 }
 
 @Injectable({
