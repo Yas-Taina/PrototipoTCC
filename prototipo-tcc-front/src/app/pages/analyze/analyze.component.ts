@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, ElementRef, inject, ViewChild } from '@angular/core';
-import { DataPointsService } from '../../services/data-points.service';
+import { DataPointsService } from '../../services/api/data-points.service';
 
 @Component({
   selector: 'app-analyze',
@@ -29,7 +29,7 @@ export class AnalyzeComponent implements AfterViewInit {
   async executar() {
     this.isLoading = true;
 
-    const points = this.dataPointsService.GetDataPoints();
+    const points = await this.dataPointsService.GetDataPoints();
 
     if (points.length === 0) {
       alert('Nenhum dado armazenado para análise. Por favor, registre alguns dados primeiro.');
@@ -38,7 +38,7 @@ export class AnalyzeComponent implements AfterViewInit {
     }
 
     try {
-      this.htmlContent = await this.dataPointsService.Analyze() ?? '';
+      //this.htmlContent = await this.dataPointsService.Analyze() ?? '';
       this.updateIframe();
     } catch (error) {
       console.error('Erro ao executar análise:', error);

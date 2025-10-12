@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { DataPoint, DataPointsService } from '../../services/data-points.service';
+import { DataPointsService } from '../../services/api/data-points.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -21,14 +21,18 @@ export class FormComponent {
 
   constructor() { }
 
-  onSubmit(point: any) {
+  async onSubmit(point: any) {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
-    this.dataPointsService.Save(point);
-
-    alert("Dados registrados com sucesso");
+    try {
+      await this.dataPointsService.Save(point);
+      alert("Dados registrados com sucesso");
+    }
+    catch (error) {
+      alert(`Erro ao salvar ponto de dados: ${error}`);
+    }    
   }
 }

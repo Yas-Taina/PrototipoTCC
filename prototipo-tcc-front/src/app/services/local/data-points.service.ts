@@ -1,11 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-
-export interface DataPoint {
-  date: Date;
-  valueX?: number;
-  valueY?: number;
-}
+import { DataPoint } from '../../models/data-point';
 
 @Injectable({
   providedIn: 'root'
