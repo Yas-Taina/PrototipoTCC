@@ -2,15 +2,6 @@
   <h3>Inserir Dados</h3>
   <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
     <div style="display: flex; flex-direction: column; align-items: stretch; width: 200px; gap: 10px;">
-      <label for="type">Tipo:</label>
-      <select id="type" formControlName="type" class="field">
-        <option value="x" selected>X</option>
-        <option value="y">Y</option>
-      </select>
-      <div class="invalid-feedback"
-        *ngIf="form.get('type')?.errors && (form.get('type')?.touched || form.get('type')?.dirty)">
-        <div *ngIf="form.get('type')?.errors?.['required']">Por favor selecione um tipo</div>
-      </div>
 
       <label for="date">Data:</label>
       <input id="date" type="date" formControlName="date" class="field">
@@ -19,12 +10,20 @@
         <div *ngIf="form.get('date')?.errors?.['required']">Por favor insira uma data válida</div>
       </div>
 
-      <label for="value">Valor:</label>
-      <input id="value" type="number" formControlName="value" class="field">
+      <label for="valueX">Valor X:</label>
+      <input id="valueX" type="number" formControlName="valueX" class="field">
       <div class="invalid-feedback"
-        *ngIf="form.get('value')?.errors && (form.get('value')?.touched || form.get('value')?.dirty)">
-        <div *ngIf="form.get('value')?.errors?.['required']">Por favor insira um valor</div>
-        <div *ngIf="form.get('value')?.errors?.['min']">Por favor insira um valor igual ou maior que zero</div>
+        *ngIf="form.get('valueX')?.errors && (form.get('valueX')?.touched || form.get('valueX')?.dirty)">
+        <div *ngIf="form.get('valueX')?.errors?.['required']">Por favor insira um valor</div>
+        <div *ngIf="form.get('valueX')?.errors?.['min']">Por favor insira um valor igual ou maior que zero</div>
+      </div>
+
+      <label for="valueY">Valor Y:</label>
+      <input id="valueY" type="number" formControlName="valueY" class="field">
+      <div class="invalid-feedback"
+        *ngIf="form.get('valueY')?.errors && (form.get('valueY')?.touched || form.get('valueY')?.dirty)">
+        <div *ngIf="form.get('valueY')?.errors?.['required']">Por favor insira um valor</div>
+        <div *ngIf="form.get('valueY')?.errors?.['min']">Por favor insira um valor igual ou maior que zero</div>
       </div>
 
       <button class="button" type="submit">Registrar</button>

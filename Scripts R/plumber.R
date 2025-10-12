@@ -20,20 +20,6 @@ cors <- function(req, res) {
   }
 }
 
-to_na <- function(x) {
-  if (is.null(x)) {
-    return(NA)
-  }
-
-  x_char <- trimws(as.character(x))
-
-  if (x_char == "" || toupper(x_char) == "NA" || is.na(x_char)) {
-    return(NA)
-  }
-
-  return(x)
-}
-
 #* Health check
 #* @get /health
 function() {
@@ -51,20 +37,17 @@ function(req, res) {
       dados_json <- req$postBody
       cat("JSON recebido:", dados_json, "\n")
 
-      dados <- fromJSON(dados_json)
+      dados <- fromJSON(dados_json, simplifyVector = TRUE)
 
       if (!all(c("data", "valor_x", "valor_y") %in% names(dados))) {
         res$status <- 400
         return(list(error = "JSON deve conter campos: data, valor_x, valor_y"))
       }
 
-      valor_x_clean <- sapply(dados$valor_x, to_na, USE.NAMES = FALSE)
-      valor_y_clean <- sapply(dados$valor_y, to_na, USE.NAMES = FALSE)
-
       df <- data.frame(
         data = as.Date(dados$data),
-        valor_x = as.numeric(valor_x_clean),
-        valor_y = as.numeric(valor_y_clean)
+        valor_x = as.numeric(dados$valor_x),
+        valor_y = as.numeric(dados$valor_y)
       )
 
       df_agrupado <- df %>%
