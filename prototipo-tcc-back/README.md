@@ -13,4 +13,4 @@ Para rodar este projeto, é necessario instalar:
 Abrir um terminal na pasta do backend, e seguir os seguintes passos:
 
 1. Para inicalizar o banco de dados: `docker-compose up -d`
-2. Para rodar o backend: `rails server`
+2. Para rodar o backend: `rails server -e development`
