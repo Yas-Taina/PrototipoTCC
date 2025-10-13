@@ -7,38 +7,29 @@ import { DataPoint } from '../../models/data-point';
 })
 export class DataPointsService {
 
-  private readonly apiUrl = 'http://localhost:3000/data_point';
+  private readonly apiUrl = 'http://localhost:3000';
   readonly httpClient = inject(HttpClient);
 
   async StoreDataPoint(point: DataPoint) {
-    await this.httpClient.post(`${this.apiUrl}`, point).toPromise();
+    await this.httpClient.post(`${this.apiUrl}/data_point`, point).toPromise();
   }
 
   async GetDataPoints(): Promise<DataPoint[]> {
-    return await this.httpClient.get<DataPoint[]>(`${this.apiUrl}`).toPromise() ?? [];
+    return await this.httpClient.get<DataPoint[]>(`${this.apiUrl}/data_point`).toPromise() ?? [];
   }
 
   async Save(point: DataPoint) {
-    this.StoreDataPoint(point); 
+    this.StoreDataPoint(point);
   }
 
   async Remove(index: number) {
-    await this.httpClient.delete(`${this.apiUrl}/${index}`).toPromise();
+    await this.httpClient.delete(`${this.apiUrl}/${index}/data_point`).toPromise();
   }
 
-  // async Analyze() {
-  //   const points = this.GetDataPoints();
-
-  //   return await this.httpClient.post(
-  //     'http://localhost:8000/gerar_grafico',
-  //     {
-  //       data: points.map(p => p.date.toString()),
-  //       valor_x: points.map(p => p.valueX),
-  //       valor_y: points.map(p => p.valueY),
-  //     },
-  //     {
-  //       headers: { 'Content-Type': 'application/json' },
-  //       responseType: 'text'
-  //     }).toPromise();
-  // }
+  async Analyze() {
+    return await this.httpClient.get(
+      `${this.apiUrl}/analysis/execute`,
+      { responseType: 'text' }
+    ).toPromise();
+  }
 }

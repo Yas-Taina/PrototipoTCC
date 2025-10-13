@@ -38,7 +38,7 @@ export class AnalyzeComponent implements AfterViewInit {
     }
 
     try {
-      //this.htmlContent = await this.dataPointsService.Analyze() ?? '';
+      this.htmlContent = await this.dataPointsService.Analyze() ?? '';
       this.updateIframe();
     } catch (error) {
       console.error('Erro ao executar análise:', error);
