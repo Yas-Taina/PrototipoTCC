@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { DataPoint, DataPointsService } from '../../services/data-points.service';
+import { Component, inject, OnInit } from '@angular/core';
+import { DataPointsService } from '../../services/api/data-points.service';
+import { DataPoint } from '../../models/data-point';
 
 @Component({
   selector: 'app-grid',
@@ -8,16 +9,16 @@ import { DataPoint, DataPointsService } from '../../services/data-points.service
   templateUrl: './grid.component.html',
   styleUrl: './grid.component.css'
 })
-export class GridComponent {
+export class GridComponent implements OnInit {
   readonly dataPointsService = inject(DataPointsService);
   dataPoints: DataPoint[] = []; 
 
-  constructor() {
-    this.dataPoints = this.dataPointsService.GetDataPoints();
+  async ngOnInit() {
+    this.dataPoints = await this.dataPointsService.GetDataPoints();
   }
 
-  remove(index: number) {
-    this.dataPointsService.Remove(index);
-    this.dataPoints = this.dataPointsService.GetDataPoints();
+  async remove(index: number) {
+    await this.dataPointsService.Remove(index);
+    this.dataPoints = await this.dataPointsService.GetDataPoints();
   }
 }

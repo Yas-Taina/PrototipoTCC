@@ -12,7 +12,7 @@
       <td class="celula">{{ point.valueX ?? 'NA' }}</td>
       <td class="celula">{{ point.valueY ?? 'NA' }}</td>
       <td class="celula">
-        <button class="button-delete" (click)="remove(i)">X</button>
+        <button class="button-delete" (click)="remove(point.id!)">X</button>
       </td>
     </tr>
     @if (dataPoints.length === 0) {
