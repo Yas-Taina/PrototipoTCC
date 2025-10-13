@@ -7,6 +7,8 @@ Rails.application.routes.draw do
 
   get "test" => "application#test", as: :rails_test
 
+  get "analysis/execute" => "analysis#execute"
+
   resources :data_point
 
   # Defines the root path route ("/")
