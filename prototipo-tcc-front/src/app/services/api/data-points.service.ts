@@ -23,7 +23,7 @@ export class DataPointsService {
   }
 
   async Remove(index: number) {
-    await this.httpClient.delete(`${this.apiUrl}/${index}/data_point`).toPromise();
+    await this.httpClient.delete(`${this.apiUrl}/data_point/${index}`).toPromise();
   }
 
   async Analyze() {
