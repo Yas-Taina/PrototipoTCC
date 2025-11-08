@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres:17
+    container_name: prototipo_tcc_database_container
+    restart: always
+    environment:
+      POSTGRES_USER: prototipo_tcc_user
+      # Quote the password to avoid any accidental variable interpolation
+      POSTGRES_PASSWORD: "Pswd_Prttp_Tcc_587964$"
+      POSTGRES_DB: prototipo_tcc_db
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "5432:5432"
+    volumes:
+      - prototipo_tcc_data:/var/lib/postgresql/data
+  backend:
+    build:
+      context: ./prototipo-tcc-back
+      dockerfile: Dockerfile
+    container_name: prototipo_tcc_backend
+    restart: unless-stopped
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      RAILS_ENV: development
+      DB_HOST: database
+      # Prefer DATABASE_URL so Rails/ActiveRecord use TCP instead of a unix socket
+      DATABASE_URL: "postgresql://prototipo_tcc_user:Pswd_Prttp_Tcc_587964$@database:5432/prototipo_tcc_db"
+      PGHOST: database
+      POSTGRES_USER: prototipo_tcc_user
+      POSTGRES_PASSWORD: "Pswd_Prttp_Tcc_587964$"
+      POSTGRES_DB: prototipo_tcc_db
+    ports:
+      - "3000:80"
+  frontend:
+    build: ./prototipo-tcc-front
+    ports:
+      - "4200:4200"
+  analysis_api:
+    build: ./Scripts R
+    container_name: prototipo_tcc_analysis_api
+    ports:
+      - "8000:8000"
+volumes:
+  prototipo_tcc_data:
+    driver: local
