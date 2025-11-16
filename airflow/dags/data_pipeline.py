@@ -16,11 +16,10 @@ def get_engine(conn_id: str):
     """
     conn = BaseHook.get_connection(conn_id)
     return create_engine(
-        f"postgresql://{conn.login}:{conn.password}@{conn.host}:{conn.port}/{conn.schema}"
+        f"postgresql://{conn.login}:teste123@{conn.host}:{conn.port}/{conn.schema}"
     )
 
 def etl_daily(**kwargs):
-    # Engines usando conn_id
     source_engine = get_engine("postgres_source")
     analytics_engine = get_engine("postgres_analytics")
 
@@ -30,7 +29,7 @@ def etl_daily(**kwargs):
     # Transformar
     df["created_date"] = pd.to_datetime(df["date"]).dt.date
 
-    daily_df = df.groupby(["created_date"])[["valueX", "valueY"]].sum().reset_index()
+    daily_df = df.groupby(["created_date"])[["value_x", "value_y"]].sum().reset_index()
 
     # Carregar
     daily_df.to_sql(
@@ -41,7 +40,6 @@ def etl_daily(**kwargs):
     )
 
 def etl_weekly(**kwargs):
-    # Engines usando conn_id
     source_engine = get_engine("postgres_source")
     analytics_engine = get_engine("postgres_analytics")
 
@@ -50,7 +48,7 @@ def etl_weekly(**kwargs):
 
     # Transformar - agregação semanal
     df["created_week"] = pd.to_datetime(df["date"]).dt.to_period("W").apply(lambda r: r.start_time.date())
-    weekly_df = df.groupby("created_week")[["valueX", "valueY"]].sum().reset_index()
+    weekly_df = df.groupby("created_week")[["value_x", "value_y"]].sum().reset_index()
 
     # Carregar
     weekly_df.to_sql(

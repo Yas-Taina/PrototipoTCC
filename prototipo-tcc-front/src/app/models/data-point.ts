@@ -1,6 +1,6 @@
 export interface DataPoint {
   id?: number;
   date: Date;
-  valueX?: number;
-  valueY?: number;
+  value_x?: number;
+  value_y?: number;
 }

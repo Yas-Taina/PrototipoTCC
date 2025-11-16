@@ -6,37 +6,36 @@ services:
     container_name: prototipo_tcc_database_container
     restart: always
     environment:
-      POSTGRES_USER: prototipo_tcc_user
+      POSTGRES_USER: root
       POSTGRES_PASSWORD: teste123
       POSTGRES_DB: prototipo_tcc_db
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
-      interval: 1s
-      timeout: 5s
-      retries: 10
+    # healthcheck:
+      # test: [ "CMD-SHELL", "pg_isready", "-U", "root", "-d", "prototipo_tcc_db" ]
+      # interval: 1s
+      # timeout: 5s
+      # retries: 10
     ports:
-      - "5432:5432"
+      - "5410:5432"
     volumes:
       - prototipo_tcc_data:/var/lib/postgresql/data
     networks:
       - prototipo_tcc_network
-
 
   analytics_database:
     image: postgres:17
     container_name: prototipo_tcc_analytics_database_container
     restart: always
     environment:
-      POSTGRES_USER: prototipo_tcc_user
+      POSTGRES_USER: root
       POSTGRES_PASSWORD: teste123
       POSTGRES_DB: prototipo_tcc_analytics_db
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
-      interval: 1s
+      test: ["CMD-SHELL", "pg_isready -U root -d prototipo_tcc_analytics_db"]
+      interval: 5s
       timeout: 5s
       retries: 10
     ports:
-      - "5433:5433"
+      - "5411:5432"
     volumes:
       - prototipo_tcc_analytics_data:/var/lib/postgresql/data
     networks:
@@ -56,16 +55,16 @@ services:
       RAILS_LOG_TO_STDOUT: "true"
       RAILS_MAX_THREADS: 5
       PLUMBER_URL: "http://host.docker.internal:8000/gerar_grafico"
-      DATABASE_URL: postgresql://prototipo_tcc_user:teste123@database:5432/prototipo_tcc_db
+      DATABASE_URL: postgresql://root:teste123@database:5432/prototipo_tcc_db
       PORT: 3000
     volumes:
       - ./prototipo-tcc-back:/rails
     depends_on:
       database:
-        condition: service_healthy
+        condition: service_started
     networks:
       - prototipo_tcc_network
-      
+
   airflow_postgres:
     image: postgres:15
     container_name: airflow_postgres
@@ -94,6 +93,9 @@ services:
           --lastname Admin \
           --role Admin \
           --email admin@example.com
+    depends_on:
+      airflow_postgres:
+        condition: service_started
     environment:
       AIRFLOW__CORE__LOAD_EXAMPLES: "false"
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: "${AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}"

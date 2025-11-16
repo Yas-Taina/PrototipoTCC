@@ -11,9 +11,9 @@ get_conn_analytics <- function() {
   dbConnect(
     RPostgres::Postgres(),
     dbname = Sys.getenv("ANALYTICS_DB_NAME", "prototipo_tcc_analytics_db"),
-    host = Sys.getenv("ANALYTICS_DB_HOST", "host.docker.internal"),
-    port = as.integer(Sys.getenv("ANALYTICS_DB_PORT", 5433)),
-    user = Sys.getenv("ANALYTICS_DB_USER", "prototipo_tcc_user"),
+    host = Sys.getenv("ANALYTICS_DB_HOST", "localhost"),
+    port = as.integer(Sys.getenv("ANALYTICS_DB_PORT", 5411)),
+    user = Sys.getenv("ANALYTICS_DB_USER", "root"),
     password = Sys.getenv("ANALYTICS_DB_PASSWORD", "teste123")
   )
 }
@@ -49,26 +49,19 @@ function(res) {
   tryCatch({
     # Consulta dados do banco analítico
     df <- dbGetQuery(conn, "
-      SELECT created_date AS data, valueX AS valor_x, valueY AS valor_y
+      SELECT created_date AS data, value_x AS valor_x, value_y AS valor_y
       FROM daily_data_points
     ")
     df$data <- as.Date(df$data)
-    
-    # Agrupamento
-    df_agrupado <- df %>%
-      group_by(data) %>%
-      summarise(
-        total_x = if (all(is.na(valor_x))) NA_real_ else sum(valor_x, na.rm = TRUE),
-        total_y = if (all(is.na(valor_y))) NA_real_ else sum(valor_y, na.rm = TRUE)
-      ) %>%
-      arrange(data)
+    df$valor_x <- as.numeric(df$valor_x)
+    df$valor_y <- as.numeric(df$valor_y)
     
     # Gráfico
-    grafico <- ggplot(df_agrupado, aes(x = data)) +
-      geom_line(aes(y = total_x, color = "Valor X"), linewidth = 1.2) +
-      geom_line(aes(y = total_y, color = "Valor Y"), linewidth = 1.2) +
-      geom_point(aes(y = total_x, color = "Valor X"), size = 2) +
-      geom_point(aes(y = total_y, color = "Valor Y"), size = 2) +
+    grafico <- ggplot(df, aes(x = data)) +
+      geom_line(aes(y = valor_x, color = "Valor X"), linewidth = 1.2) +
+      geom_line(aes(y = valor_y, color = "Valor Y"), linewidth = 1.2) +
+      geom_point(aes(y = valor_x, color = "Valor X"), size = 2) +
+      geom_point(aes(y = valor_y, color = "Valor Y"), size = 2) +
       scale_color_manual(values = c("Valor X" = "#1f77b4", "Valor Y" = "#ff7f0e"), name = "Variáveis") +
       labs(
         title = "Progressão dos Valores X e Y por Data",

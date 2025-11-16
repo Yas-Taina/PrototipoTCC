@@ -2,10 +2,10 @@
 
 one:
   date: 2025-10-12 18:37:27
-  valueX: 1
-  valueY: 1
+  value_x: 1
+  value_y: 1
 
 two:
   date: 2025-10-12 18:37:27
-  valueX: 1
-  valueY: 1
+  value_x: 1
+  value_y: 1

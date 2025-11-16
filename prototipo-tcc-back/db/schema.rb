@@ -16,8 +16,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_12_231756) do
 
   create_table "data_points", force: :cascade do |t|
     t.datetime "date"
-    t.integer "valueX"
-    t.integer "valueY"
+    t.integer "value_x"
+    t.integer "value_y"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

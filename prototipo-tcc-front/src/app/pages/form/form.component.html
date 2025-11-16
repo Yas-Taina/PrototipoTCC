@@ -10,20 +10,20 @@
         <div *ngIf="form.get('date')?.errors?.['required']">Por favor insira uma data válida</div>
       </div>
 
-      <label for="valueX">Valor X:</label>
-      <input id="valueX" type="number" formControlName="valueX" class="field">
+      <label for="value_x">Valor X:</label>
+      <input id="value_x" type="number" formControlName="value_x" class="field">
       <div class="invalid-feedback"
-        *ngIf="form.get('valueX')?.errors && (form.get('valueX')?.touched || form.get('valueX')?.dirty)">
-        <div *ngIf="form.get('valueX')?.errors?.['required']">Por favor insira um valor</div>
-        <div *ngIf="form.get('valueX')?.errors?.['min']">Por favor insira um valor igual ou maior que zero</div>
+        *ngIf="form.get('value_x')?.errors && (form.get('value_x')?.touched || form.get('value_x')?.dirty)">
+        <div *ngIf="form.get('value_x')?.errors?.['required']">Por favor insira um valor</div>
+        <div *ngIf="form.get('value_x')?.errors?.['min']">Por favor insira um valor igual ou maior que zero</div>
       </div>
 
-      <label for="valueY">Valor Y:</label>
-      <input id="valueY" type="number" formControlName="valueY" class="field">
+      <label for="value_y">Valor Y:</label>
+      <input id="value_y" type="number" formControlName="value_y" class="field">
       <div class="invalid-feedback"
-        *ngIf="form.get('valueY')?.errors && (form.get('valueY')?.touched || form.get('valueY')?.dirty)">
-        <div *ngIf="form.get('valueY')?.errors?.['required']">Por favor insira um valor</div>
-        <div *ngIf="form.get('valueY')?.errors?.['min']">Por favor insira um valor igual ou maior que zero</div>
+        *ngIf="form.get('value_y')?.errors && (form.get('value_y')?.touched || form.get('value_y')?.dirty)">
+        <div *ngIf="form.get('value_y')?.errors?.['required']">Por favor insira um valor</div>
+        <div *ngIf="form.get('value_y')?.errors?.['min']">Por favor insira um valor igual ou maior que zero</div>
       </div>
 
       <button class="button" type="submit">Registrar</button>

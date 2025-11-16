@@ -40,6 +40,6 @@ class DataPointController < ApplicationController
   end
 
   def point_params
-    params.permit(:date, :valueX, :valueY)
+    params.permit(:date, :value_x, :value)
   end
 end

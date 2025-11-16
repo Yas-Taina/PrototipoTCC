@@ -15,8 +15,8 @@ export class FormComponent {
 
   form = this.builder.group({
     date: [null, [Validators.required]],
-    valueX: [null, [Validators.min(0)]],
-    valueY: [null, [Validators.min(0)]],
+    value_x: [null, [Validators.min(0)]],
+    value_y: [null, [Validators.min(0)]],
   });
 
   constructor() { }
