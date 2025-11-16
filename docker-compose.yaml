@@ -7,7 +7,7 @@ services:
     restart: always
     environment:
       POSTGRES_USER: prototipo_tcc_user
-      POSTGRES_PASSWORD: Pswd_Prttp_Tcc_587964$
+      POSTGRES_PASSWORD: teste123
       POSTGRES_DB: prototipo_tcc_db
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready" ]
@@ -28,7 +28,7 @@ services:
     restart: always
     environment:
       POSTGRES_USER: prototipo_tcc_user
-      POSTGRES_PASSWORD: Pswd_Prttp_Tcc_587964$
+      POSTGRES_PASSWORD: teste123
       POSTGRES_DB: prototipo_tcc_analytics_db
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready" ]
@@ -36,14 +36,16 @@ services:
       timeout: 5s
       retries: 10
     ports:
-      - "5433:5432"
+      - "5433:5433"
     volumes:
       - prototipo_tcc_analytics_data:/var/lib/postgresql/data
     networks:
       - prototipo_tcc_network
 
   web:
-    build: .
+    build:
+      context: ./prototipo-tcc-back
+      dockerfile: Dockerfile
     container_name: prototipo_tcc_web_container
     restart: unless-stopped
     command: ./bin/rails server -b 0.0.0.0 -p 3000
@@ -54,10 +56,10 @@ services:
       RAILS_LOG_TO_STDOUT: "true"
       RAILS_MAX_THREADS: 5
       PLUMBER_URL: "http://host.docker.internal:8000/gerar_grafico"
-      DATABASE_URL: postgresql://prototipo_tcc_user:Pswd_Prttp_Tcc_587964$@database:5432/prototipo_tcc_db
+      DATABASE_URL: postgresql://prototipo_tcc_user:teste123@database:5432/prototipo_tcc_db
       PORT: 3000
     volumes:
-      - .:/rails
+      - ./prototipo-tcc-back:/rails
     depends_on:
       database:
         condition: service_healthy
@@ -94,7 +96,7 @@ services:
           --email admin@example.com
     environment:
       AIRFLOW__CORE__LOAD_EXAMPLES: "false"
-      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow_postgres:5432/airflow
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: "${AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}"
     volumes:
       - ./airflow:/opt/airflow
     networks:
@@ -110,10 +112,12 @@ services:
       airflow_postgres:
         condition: service_started
     environment:
-      AIRFLOW__CORE__EXECUTOR: LocalExecutor
-      AIRFLOW__CORE__FERNET_KEY: "ivare123456789012345678901234567"
-      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow_postgres:5432/airflow
+      AIRFLOW__CORE__EXECUTOR: "${AIRFLOW__CORE__EXECUTOR}"
+      AIRFLOW__CORE__FERNET_KEY: "${AIRFLOW__CORE__FERNET_KEY}"
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: "${AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}"
+      AIRFLOW_CONN_POSTGRES_SOURCE: "${AIRFLOW_CONN_POSTGRES_SOURCE}"
       AIRFLOW__DATABASE__LOAD_DEFAULT_CONNECTIONS: "false"
+      AIRFLOW_CONN_POSTGRES_ANALYTICS: "${AIRFLOW_CONN_POSTGRES_ANALYTICS}"
     volumes:
       - ./airflow:/opt/airflow
     ports:
@@ -130,9 +134,11 @@ services:
       airflow-webserver:
         condition: service_started
     environment:
-      AIRFLOW__CORE__EXECUTOR: LocalExecutor
-      AIRFLOW__CORE__FERNET_KEY: "ivare123456789012345678901234567"
-      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow_postgres:5432/airflow
+      AIRFLOW__CORE__EXECUTOR: "${AIRFLOW__CORE__EXECUTOR}"
+      AIRFLOW__CORE__FERNET_KEY: "${AIRFLOW__CORE__FERNET_KEY}"
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: "${AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}"
+      AIRFLOW_CONN_POSTGRES_SOURCE: "${AIRFLOW_CONN_POSTGRES_SOURCE}"
+      AIRFLOW_CONN_POSTGRES_ANALYTICS: "${AIRFLOW_CONN_POSTGRES_ANALYTICS}"
     volumes:
       - ./airflow:/opt/airflow
     command: airflow scheduler
