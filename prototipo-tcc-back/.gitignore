@@ -30,6 +30,3 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
-/airflow/logs/*
-/airflow/logs/
-/airflow/logs
