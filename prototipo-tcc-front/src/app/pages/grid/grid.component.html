@@ -1,0 +1,24 @@
+<div style="margin: 20px">
+  <h3>Dados Armazenados</h3>
+  <table>
+    <tr>
+      <th>Data</th>
+      <th>Valor X</th>
+      <th>Valor Y</th>
+      <th>Ações</th>
+    </tr>
+    <tr *ngFor="let point of dataPoints; let i = index">
+      <td class="celula">{{ point.date | date: 'dd/MM/yyyy' }}</td>
+      <td class="celula">{{ point.value_x ?? 'NA' }}</td>
+      <td class="celula">{{ point.value_y ?? 'NA' }}</td>
+      <td class="celula">
+        <button class="button-delete" (click)="remove(point.id!)">X</button>
+      </td>
+    </tr>
+    @if (dataPoints.length === 0) {
+    <tr>
+      <td colspan="4">Nenhum dado armazenado</td>
+    </tr>
+    }
+  </table>
+</div>
