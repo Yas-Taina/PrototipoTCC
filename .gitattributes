@@ -1,0 +1,7 @@
+* text=auto eol=lf
+*.sh text eol=lf
+*.rb text eol=lf
+*.rake text eol=lf
+Dockerfile text eol=lf
+dockerentrypoint.sh text eol=lf
+docker-entrypoint text eol=lf
